@@ -25,10 +25,10 @@ export default function UserPage() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("https://motolabpitshop-backend.vercel.app/api/auth/alluser", {
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+        const response = await axios.get("http://localhost:8000/api/auth/getalluser", {
+          // headers: {
+          //   'Authorization': 'Bearer ' + localStorage.getItem('token')
+          // }
         });
 
         if (response.data?.users) {
@@ -55,8 +55,8 @@ export default function UserPage() {
       setFilteredUsers(users);
     } else {
       const filtered = users.filter(user =>
-        user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        user.FullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.Email.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredUsers(filtered);
     }
@@ -71,16 +71,16 @@ export default function UserPage() {
     if (!userToDelete) return;
 
     const id = userToDelete._id;
-    const userName = userToDelete.fullName;
+    const userName = userToDelete.FullName;
 
     try {
       setDeletingId(id);
       setShowConfirmDialog(false);
 
-      const response = await axios.delete(`https://motolabpitshop-backend.vercel.app/api/auth/deleteuser/${id}`, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        },
+      const response = await axios.delete(`http://localhost:8000/api/auth/deleteuser/${id}`, {
+        // headers: {
+        //   'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        // },
       });
 
       if (response.status === 200) {
@@ -141,26 +141,26 @@ export default function UserPage() {
     setSubject(''); // Reset subject when closing message box
   };
 
-  // Updated function to send message/email to user
+  // Updated function to send message/Email to user
   const sendMessage = async () => {
     if (!selectedUser || !message.trim() || !subject.trim()) return;
 
     try {
       setSendingMessage(true);
 
-      // Use the new admin email sending endpoint
+      // Use the new admin Email sending endpoint
       const response = await axios.post(
-        "https://motolabpitshop-backend.vercel.app/api/admin/send-email",
+        "http://localhost:8000/api/auth/send-Email",
         {
-          name: selectedUser.fullName,
-          email: selectedUser.email,
+          name: selectedUser.FullName,
+          email: selectedUser.Email,
           subject: subject,
           message: message
         },
         {
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+          // headers: {
+          //   'Authorization': 'Bearer ' + localStorage.getItem('token')
+          // }
         }
       );
 
@@ -168,7 +168,7 @@ export default function UserPage() {
         // Show success sweet alert
         swal({
           title: "Email Sent!",
-          text: `Your message has been sent to ${selectedUser.fullName} successfully!`,
+          text: `Your message has been sent to ${selectedUser.FullName} successfully!`,
           icon: "success",
           button: "OK",
           timer: 3000,
@@ -176,15 +176,15 @@ export default function UserPage() {
 
         closeMessageBox();
       } else {
-        throw new Error("Failed to send email");
+        throw new Error("Failed to send Email");
       }
     } catch (error) {
-      console.error("Error sending email:", error);
+      console.error("Error sending Email:", error);
 
       // Show error sweet alert
       swal({
         title: "Error!",
-        text: "Failed to send email. Please try again.",
+        text: "Failed to send Email. Please try again.",
         icon: "error",
         button: "OK",
       });
@@ -214,7 +214,7 @@ export default function UserPage() {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {/* Header */}
-          <div className="px-3 py-2 md:px-6 md:py-4 border-b border-gray-200 bg-gray-800 text-white">
+          <div className="px-3 py-2 md:px-6 md:py-4 border-b border-gray-200 bg-green-700 text-white">
             <h1 className="text-base md:text-xl font-semibold">User Management</h1>
           </div>
 
@@ -226,7 +226,7 @@ export default function UserPage() {
               </div>
               <input
                 type="text"
-                placeholder="Search by name or email..."
+                placeholder="Search by name or Email..."
                 className="pl-7 w-full p-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -249,12 +249,27 @@ export default function UserPage() {
                   >
                     {/* User info - Compact layout */}
                     <div className="flex items-center overflow-hidden">
-                      <div className="bg-gray-100 p-1.5 rounded-full mr-2">
-                        <User size={14} className="text-gray-500" />
+                      <div className="w-12 h-12 rounded-full mr-4 flex items-center justify-center overflow-hidden bg-gray-100">
+                        {user.ProfileImage ? (
+                          <img
+                            src={user.ProfileImage}
+                            alt={<User size={20} className="text-gray-500" />}
+                            className="w-full h-full object-cover rounded-full"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextElementSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className={`w-full h-full flex items-center justify-center ${user.ProfileImage ? 'hidden' : 'flex'}`}
+                        >
+                          <User size={20} className="text-gray-500" />
+                        </div>
                       </div>
                       <div className="min-w-0">
-                        <div className="font-medium text-xs sm:text-sm truncate">{user.fullName}</div>
-                        <div className="text-xs text-gray-500 truncate">{user.email}</div>
+                        <div className="font-medium text-xs sm:text-sm truncate">{user.FullName}</div>
+                        <div className="text-xs text-gray-500 truncate">{user.Email}</div>
                       </div>
                     </div>
 
@@ -298,7 +313,7 @@ export default function UserPage() {
             </div>
 
             <p className="mb-3 text-xs sm:text-sm">
-              Delete <span className="font-semibold">{userToDelete?.fullName}</span>?
+              Delete <span className="font-semibold">{userToDelete?.FullName}</span>?
               This cannot be undone.
             </p>
 
@@ -321,7 +336,7 @@ export default function UserPage() {
         </div>
       )}
 
-      {/* Message Box Dialog - Compact version (Now used for sending emails) */}
+      {/* Message Box Dialog - Compact version (Now used for sending Emails) */}
       {showMessageBox && selectedUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
           <div className="bg-white rounded-lg p-3 w-full max-w-xs sm:max-w-sm mx-auto shadow-xl">
@@ -329,7 +344,7 @@ export default function UserPage() {
               <div className="flex items-center">
                 <MessageSquare size={14} className="text-blue-600 mr-1.5" />
                 <h3 className="text-sm font-medium truncate max-w-[180px]">
-                  To: {selectedUser.email}
+                  To: {selectedUser.Email}
                 </h3>
               </div>
               <button
