@@ -1,0 +1,27 @@
+@media (min-width: 300px) and (max-width: 450px) {
+    #additem {
+        margin-left: -50px;
+        margin-right: 20px;
+    }
+
+    #orderview {
+        margin-left: -40px;
+        margin-right: 20px;
+    }
+
+    #stock {
+        margin-left: -50px;
+        margin-right: 30px;
+    }
+
+    #login{
+        margin-left: -45px;
+        margin-right: 25px;
+    }
+
+    #dashboard{
+        margin-left: -35px;
+        margin-right: 20px;
+    }
+}
+
