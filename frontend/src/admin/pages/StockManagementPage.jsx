@@ -58,6 +58,8 @@ const ProductManagementPage = () => {
     return uniqueCategories.sort();
   }, [products]);
 
+  const storedToken = localStorage.getItem("token");
+
   // Fetch products from the API
   const fetchProducts = async () => {
     setIsLoading(true);

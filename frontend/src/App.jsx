@@ -9,7 +9,7 @@ import StockManagementPage from "./admin/pages/StockManagementPage";
 // import AdminLoginPage from "./admin/pages/AdminLoginPage";
 import OrderPage from "./admin/pages/OrderPage";
 import { ToastContainer, toast } from "react-toastify";
-
+import AdminLoginPage  from "./admin/pages/AdminLoginPage"
 function ProtectedRoute({ element }) {
   const token = localStorage.getItem("token");
   const isAdmin = localStorage.getItem("isAdmin");
@@ -50,7 +50,7 @@ function App() {
         } transition-all duration-300`}
       >
         <Routes>
-          {/* <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/adminlogin" element={<AdminLoginPage />} />
           <Route
             path="/dashboard"
@@ -75,14 +75,14 @@ function App() {
           <Route
             path="/orders"
             element={<ProtectedRoute element={<OrderPage />} />}
-          /> */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          />
+          {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
           {/* <Route path="/adminlogin" element={<AdminLoginPage />} /> */}
-          <Route path="/dashboard" element={<DashboardContent isOpen={sidebarOpen} />} />
+          {/* <Route path="/dashboard" element={<DashboardContent isOpen={sidebarOpen} />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/add-items" element={<AddItemsPage />} />
           <Route path="/stock" element={<StockManagementPage />} />
-          <Route path="/orders" element={<OrderPage />} />
+          <Route path="/orders" element={<OrderPage />} /> */}
 
         </Routes>
       </div>
