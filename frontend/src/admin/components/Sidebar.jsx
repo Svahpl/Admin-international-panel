@@ -67,13 +67,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed left-0 top-0 h-full bg-gray-900 text-white transition-all duration-300 shadow-xl z-20
+        className={`fixed left-0 top-0 h-full bg-green-800 text-white transition-all duration-300 shadow-xl z-20
           ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
           ${isOpen ? 'w-64' : 'w-16 md:w-16'}`}
       >
         <div className="p-4 flex items-center justify-between">
           <Link to="/dashboard" className={`font-bold ${isOpen ? 'block' : 'hidden md:hidden'}`}>
-            MotoLab PitShop
+          <div className='flex flex-row'>
+              <img className='w-8 h-8 rounded-full' src="/src/public/VAH_20241202_232229_0000_page-0001.jpg" alt="error" />
+              <span className='ml-12 text-xl'>SVAH</span>
+          </div>
+            
           </Link>
           <button onClick={toggleSidebar} className="p-2 hover:bg-gray-800 rounded-lg ml-auto">
             {isOpen ? <X size={20} /> : <Menu size={20} className="hidden md:block" />}
@@ -85,7 +89,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <Link
               key={index}
               to={item.path}
-              className={`flex items-center p-4 hover:bg-gray-800 transition-colors ${location.pathname === item.path ? 'bg-gray-800' : ''
+              className={`flex items-center p-4 hover:bg-green-900 transition-colors ${location.pathname === item.path ? 'bg-gray-800' : ''
                 }`}
               onClick={() => {
                 if (window.innerWidth < 768 && isOpen) {

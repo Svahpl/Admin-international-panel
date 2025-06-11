@@ -111,7 +111,9 @@ const AddItemsPage = () => {
       // Make actual API call
       const response = await fetch('http://localhost:8000/api/product/add', {
         method: 'POST',
-        body: formDataForSubmit
+        body: formDataForSubmit,
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}
+
       });
 
       if (!response.ok) {

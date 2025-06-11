@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useRef , useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./admin/components/Sidebar";
 import Header from "./admin/components/Header";
@@ -10,17 +10,26 @@ import StockManagementPage from "./admin/pages/StockManagementPage";
 import OrderPage from "./admin/pages/OrderPage";
 import { ToastContainer, toast } from "react-toastify";
 import AdminLoginPage  from "./admin/pages/AdminLoginPage"
+import AdminSignupPage from "./admin/pages/AdminSignupPage";
 function ProtectedRoute({ element }) {
   const token = localStorage.getItem("token");
   const isAdmin = localStorage.getItem("isAdmin");
+  const hasShownToast = useRef(false); 
+
+  useEffect(() => {
+    if (isAdmin !== "true" && !hasShownToast.current) {
+      setTimeout(() => toast.error("Only admin can login"),100)
+      hasShownToast.current = true;
+    }
+  }, [isAdmin]);
 
   if (isAdmin !== "true") {
-    setTimeout(() => toast.error("Only admin can login"), 100);
     return <Navigate to="/adminlogin" replace />;
   }
 
   return element;
 }
+
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -52,6 +61,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/adminlogin" element={<AdminLoginPage />} />
+          <Route path="/signup" element={<AdminSignupPage />} />
           <Route
             path="/dashboard"
             element={
@@ -76,13 +86,6 @@ function App() {
             path="/orders"
             element={<ProtectedRoute element={<OrderPage />} />}
           />
-          {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
-          {/* <Route path="/adminlogin" element={<AdminLoginPage />} /> */}
-          {/* <Route path="/dashboard" element={<DashboardContent isOpen={sidebarOpen} />} />
-          <Route path="/users" element={<UsersPage />} />
-          <Route path="/add-items" element={<AddItemsPage />} />
-          <Route path="/stock" element={<StockManagementPage />} />
-          <Route path="/orders" element={<OrderPage />} /> */}
 
         </Routes>
       </div>

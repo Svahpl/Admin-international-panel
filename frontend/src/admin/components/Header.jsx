@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { LogOut } from "lucide-react";
+import { LogOut ,User } from "lucide-react";
 import { toast, ToastContainer } from 'react-toastify';
 
 const Header = ({ isOpen }) => {
@@ -15,32 +15,32 @@ const Header = ({ isOpen }) => {
     const path = location.pathname.split("/")[1];
     return path ? path.charAt(0).toUpperCase() + path.slice(1).replace("-", " ") : "Dashboard";
   };
-
+  const isAdmin = localStorage.getItem("isAdmin")
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get token if required
-        const response = await axios.get("https://motolabpitshop-backend.vercel.app/api/auth/user", {
+        const token = localStorage.getItem("token"); 
+        const response = await axios.get("http://localhost:8000/api/auth/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         console.log("Admin Data:", response.data);
-        setAdminData(response.data.user.fullName);
+        setAdminData(response.data.user.FullName);
       } catch (error) {
         console.error("Error fetching admin data:", error);
       }
     };
 
     fetchAdminData();
-  }, []); // Runs only once when component mounts
+  }, [isAdmin]); // Runs only once when component mounts
 
   // Handle logout
   const handleLogout = () => {
     // Clear the token from localStorage
     localStorage.removeItem("token");
-    localStorage.removeItem("isAdmin"); // Also remove isAdmin flag
+    localStorage.removeItem("isAdmin"); 
     
     setTimeout(() => {
       navigate("/adminlogin");
@@ -71,7 +71,7 @@ const Header = ({ isOpen }) => {
         theme="light"
       />
       <div className="flex items-center">
-        <h1 className="text-xl font-semibold mr-8">{getPageTitle()}</h1>
+        <h1 className="text-xl text-green-800 font-semibold mr-8">{getPageTitle()}</h1>
       </div>
 
       <div className="flex items-center gap-4">
@@ -80,17 +80,23 @@ const Header = ({ isOpen }) => {
             className="flex items-center gap-2 cursor-pointer"
             onClick={toggleLogout}
           >
-            <img
-              src={"https://i.ibb.co/2178bTsx/motolab.jpg"}
-              alt="Admin"
-              className="w-8 h-8 rounded-full"
-            />
-            <span className="font-medium">
+            {isAdmin ? (
+              <img
+                src="/src/public/VAH_20241202_232229_0000_page-0001.jpg"
+                alt="Admin"
+                className="w-8 h-8 rounded-full"
+              />
+            ) : (
+              <User size={28} className="text-gray-500 bg-gray-50 rounded-full" />
+            )}
+
+
+            {isAdmin ? (<span className="font-medium">
               {adminData}
-            </span>
+            </span>): " "}
           </div>
 
-          {showLogout && (
+          {showLogout && isAdmin && (
             <div className="absolute right-0 top-10 bg-white shadow-md rounded-md p-2 border border-gray-200 z-20">
               <button
                 onClick={handleLogout}

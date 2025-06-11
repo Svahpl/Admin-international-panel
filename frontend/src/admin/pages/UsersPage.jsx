@@ -26,9 +26,9 @@ export default function UserPage() {
       try {
         setLoading(true);
         const response = await axios.get("http://localhost:8000/api/auth/getalluser", {
-          // headers: {
-          //   'Authorization': 'Bearer ' + localStorage.getItem('token')
-          // }
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
         });
 
         if (response.data?.users) {
@@ -78,9 +78,9 @@ export default function UserPage() {
       setShowConfirmDialog(false);
 
       const response = await axios.delete(`http://localhost:8000/api/auth/deleteuser/${id}`, {
-        // headers: {
-        //   'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        // },
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        },
       });
 
       if (response.status === 200) {
@@ -158,9 +158,9 @@ export default function UserPage() {
           message: message
         },
         {
-          // headers: {
-          //   'Authorization': 'Bearer ' + localStorage.getItem('token')
-          // }
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
         }
       );
 

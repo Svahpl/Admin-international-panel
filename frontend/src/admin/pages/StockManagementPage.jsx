@@ -65,7 +65,11 @@ const ProductManagementPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:8000/api/product/get-all');
+      const response = await axios.get('http://localhost:8000/api/product/get-all',{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      });
       console.log('API Response:', response.data);
 
       let productData = [];
@@ -131,7 +135,11 @@ const ProductManagementPage = () => {
         }
       });
 
-      const response = await axios.delete(`http://localhost:8000/api/product/delete-product/${id}`);
+      const response = await axios.delete(`http://localhost:8000/api/product/delete-product/${id}`,{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      });
 
       setProducts(prevProducts => prevProducts.filter(product =>
         (product._id !== id && product.id !== id)
@@ -228,6 +236,7 @@ const ProductManagementPage = () => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           },
         }
       );
