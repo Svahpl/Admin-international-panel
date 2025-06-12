@@ -11,6 +11,7 @@ import OrderPage from "./admin/pages/OrderPage";
 import { ToastContainer, toast } from "react-toastify";
 import AdminLoginPage  from "./admin/pages/AdminLoginPage"
 import AdminSignupPage from "./admin/pages/AdminSignupPage";
+import PasswordAuth from "./admin/pages/PasswordAuth";
 function ProtectedRoute({ element }) {
   const token = localStorage.getItem("token");
   const isAdmin = localStorage.getItem("isAdmin");
@@ -86,6 +87,8 @@ function App() {
             path="/orders"
             element={<ProtectedRoute element={<OrderPage />} />}
           />
+          <Route path='/password-auth' element={<PasswordAuth />} />
+
 
         </Routes>
       </div>

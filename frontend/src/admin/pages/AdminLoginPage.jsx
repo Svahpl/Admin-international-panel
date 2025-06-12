@@ -131,12 +131,12 @@ const AdminLoginPage = () => {
                     </div>
 
                     <div className="flex items-center justify-between mb-6">
-                        <a
-                            href="#"
+                        <Link
+                            to="/password-auth"
                             className="text-green-600 text-sm font-medium hover:text-green-700 hover:underline"
                         >
                             Forgot password?
-                        </a>
+                        </Link>
                     </div>
 
                     <button
