@@ -270,7 +270,7 @@ const PasswordAuth = () => {
         error.includes("connection");
 
     return (
-        <div className="flex flex-col min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+        <div id="stock" className="flex flex-col min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
             <Header />
             <main className="flex-1 flex flex-col justify-center items-center py-8 px-4">
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 transition-all duration-300 border border-green-100 relative overflow-hidden">
