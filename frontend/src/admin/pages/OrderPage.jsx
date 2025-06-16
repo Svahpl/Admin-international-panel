@@ -203,11 +203,10 @@ const OrdersList = () => {
 
             // Make API call to update order status - FIXED to match backend expectation
             const response = await api.put(`/order/orderstatus/${updateId}`, {
-                status: selectedOrderStatus  // Changed from orderStatus to status
+                status: selectedOrderStatus  
             }, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
-                    'Content-Type': 'application/json'
                 }
             });
 
