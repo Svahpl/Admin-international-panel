@@ -219,8 +219,8 @@ const RecentOrders = () => {
                       #{order.orderId ? `${order.orderId.slice(-8)}` : `${order._id?.slice(-8) || `ORD${index.toString().padStart(3, '0')}`}`}
                     </td>
                     <td className="py-3 px-2 sm:px-4">
-                      <div className="font-medium text-gray-900 text-sm">{order.FullName || order.name}</div>
-                      <div className="text-xs text-gray-500 truncate max-w-[150px]">{order.Email || order.email}</div>
+                      <div className="font-medium text-gray-900 text-sm">{order.userName || order.name}</div>
+                      <div className="text-xs text-gray-500 truncate max-w-[150px]">{order.userEmail || order.email}</div>
                       {order.customerPhone && (
                         <div className="text-xs text-gray-400">{order.customerPhone}</div>
                       )}
