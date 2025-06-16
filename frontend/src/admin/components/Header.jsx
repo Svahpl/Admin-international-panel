@@ -20,10 +20,9 @@ const Header = ({ isOpen }) => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const token = localStorage.getItem("token"); 
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/user`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           },
         });
 
@@ -35,11 +34,11 @@ const Header = ({ isOpen }) => {
     };
 
     fetchAdminData();
-  }, [isAdmin]); // Runs only once when component mounts
+  }, [isAdmin]); 
 
   // Handle logout
   const handleLogout = () => {
-    // Clear the token from localStorage
+
     localStorage.removeItem("token");
     localStorage.removeItem("isAdmin"); 
     

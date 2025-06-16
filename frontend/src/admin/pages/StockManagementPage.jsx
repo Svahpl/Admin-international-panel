@@ -235,7 +235,6 @@ const ProductManagementPage = () => {
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           },
         }
