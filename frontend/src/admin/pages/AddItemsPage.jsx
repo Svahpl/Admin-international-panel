@@ -109,7 +109,7 @@ const AddItemsPage = () => {
       });
 
       // Make actual API call
-      const response = await fetch('http://localhost:8000/api/product/add', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/product/add`, {
         method: 'POST',
         body: formDataForSubmit,
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}
@@ -278,7 +278,7 @@ const AddItemsPage = () => {
                 {/* Price */}
                 <div className="lg:col-span-1">
                   <label className="block text-sm font-medium text-green-700 mb-2">
-                    Price (₹) *
+                    Price ($) *
                   </label>
                   <input
                     type="number"

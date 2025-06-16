@@ -1,139 +1,99 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Calendar, User,  CreditCard } from 'lucide-react';
+import { Calendar, User, CreditCard, Package, Leaf } from 'lucide-react';
 import "../pages/page.css"
+
 const RecentOrders = () => {
   // State management for orders, loading state, and errors
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true);
+  // Unified API endpoint - use the same endpoint for both initial fetch and retry
+  const API_ENDPOINT = `${import.meta.env.VITE_BACKEND}/api/order/getOrders`;
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
 
-        // Get the authentication token from local storage
-        const token = localStorage.getItem('token');
+      // Get the authentication token from local storage
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
 
-        if (!token) {
-          setError('Authentication required. Please log in again.');
-          setLoading(false);
-          return;
-        }
-
-        // Include the token in the Authorization header
-        const response = await axios.get('https://motolabpitshop-backend.vercel.app/api/admin/get-orders', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        console.log(response.data);
-
-        // Check if response has the expected structure
-        if (response.data && Array.isArray(response.data.orders)) {
-          setOrders(response.data.orders);
-        } else if (Array.isArray(response.data)) {
-          setOrders(response.data);
-        } else {
-          console.error('Unexpected response format:', response.data);
-          setError('Unexpected data format received from server');
-        }
-
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching orders:', err);
-
-        if (err.response) {
-          // Handle specific error codes
-          if (err.response.status === 401) {
-            setError('Your session has expired. Please log in again.');
-          } else if (err.response.status === 403) {
-            setError('You do not have permission to view orders.');
-          } else {
-            setError(`Server error: ${err.response.status}. ${err.response.data?.message || 'Please try again later.'}`);
-          }
-        } else if (err.request) {
-          setError('No response from server. Please check if the API server is running.');
-        } else {
-          setError(`Failed to fetch orders: ${err.message}`);
-        }
-      } finally {
+      if (!token) {
+        setError('Authentication required. Please log in again.');
         setLoading(false);
+        return;
       }
-    };
 
+      // Use the unified API endpoint
+      const response = await axios.get(API_ENDPOINT, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('Orders fetched:', response.data);
+
+      // Handle different response structures
+      if (response.data && response.data.success && Array.isArray(response.data.data)) {
+        setOrders(response.data.data);
+      } else if (response.data && Array.isArray(response.data.orders)) {
+        setOrders(response.data.orders);
+      } else if (Array.isArray(response.data)) {
+        setOrders(response.data);
+      } else {
+        console.error('Unexpected response format:', response.data);
+        setError('Unexpected data format received from server');
+      }
+
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+
+      if (err.response) {
+        // Handle specific error codes
+        if (err.response.status === 401) {
+          setError('Your session has expired. Please log in again.');
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('token');
+        } else if (err.response.status === 403) {
+          setError('You do not have permission to view orders.');
+        } else if (err.response.status === 404) {
+          setError('Orders endpoint not found. Please contact support.');
+        } else {
+          setError(`Server error: ${err.response.status}. ${err.response.data?.message || 'Please try again later.'}`);
+        }
+      } else if (err.request) {
+        setError('No response from server. Please check your internet connection.');
+      } else {
+        setError(`Failed to fetch orders: ${err.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchOrders();
   }, []);
 
-  // Define fetchOrders outside useEffect to be able to call it from handleRetry
-  const retryFetchOrders = () => {
-    setError(null);
-    setLoading(true);
-    // Trigger the effect by forcing a component update
-    setOrders([]);
-    // Re-run the useEffect
-    const fetchOrdersAgain = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setError('Authentication required. Please log in again.');
-          setLoading(false);
-          return;
-        }
-
-        const response = await axios.get('https://motolabpitshop-backend.vercel.app/api/admin/get-orders', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.data && Array.isArray(response.data.orders)) {
-          setOrders(response.data.orders);
-        } else if (Array.isArray(response.data)) {
-          setOrders(response.data);
-        } else {
-          setError('Unexpected data format received from server');
-        }
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching orders:', err);
-        if (err.response) {
-          if (err.response.status === 401) {
-            setError('Your session has expired. Please log in again.');
-          } else if (err.response.status === 403) {
-            setError('You do not have permission to view orders.');
-          } else {
-            setError(`Server error: ${err.response.status}. ${err.response.data?.message || 'Please try again later.'}`);
-          }
-        } else if (err.request) {
-          setError('No response from server. Please check if the API server is running.');
-        } else {
-          setError(`Failed to fetch orders: ${err.message}`);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOrdersAgain();
-  };
-
-  // Function to handle retry
+  // Retry function - now uses the same fetchOrders function
   const handleRetry = () => {
-    retryFetchOrders();
+    setError(null);
+    setOrders([]);
+    fetchOrders();
   };
 
   // Function to handle login redirect
   const handleLogin = () => {
-    window.location.href = '/adminlogin';
+    window.location.href = '/admin/login';
   };
 
   // Function to format date string
   const formatDate = (dateString) => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', {
+      return date.toLocaleDateString('en-IN', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -145,42 +105,81 @@ const RecentOrders = () => {
     }
   };
 
+  // Enhanced status colors for agro/herbs business
   const getStatusColor = (status) => {
-    if (status === 'Delivered' || status === 'Success') return 'bg-green-100 text-green-800';
-    if (status === 'Shipped') return 'bg-blue-100 text-blue-800';
-    if (status === 'Pending') return 'bg-yellow-100 text-yellow-800';
-    if (status === 'Failed') return 'bg-red-100 text-red-800';
-    return 'bg-gray-100 text-gray-800';
+    const statusLower = status?.toLowerCase() || '';
+
+    if (statusLower === 'delivered' || statusLower === 'success' || statusLower === 'completed') {
+      return 'bg-green-100 text-green-800 border-green-200';
+    }
+    if (statusLower === 'shipped' || statusLower === 'dispatched' || statusLower === 'in-transit') {
+      return 'bg-blue-100 text-blue-800 border-blue-200';
+    }
+    if (statusLower === 'pending' || statusLower === 'processing' || statusLower === 'confirmed') {
+      return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+    }
+    if (statusLower === 'failed' || statusLower === 'cancelled' || statusLower === 'rejected') {
+      return 'bg-red-100 text-red-800 border-red-200';
+    }
+    if (statusLower === 'packed' || statusLower === 'ready') {
+      return 'bg-purple-100 text-purple-800 border-purple-200';
+    }
+    return 'bg-gray-100 text-gray-800 border-gray-200';
+  };
+
+  // Function to get product category icon
+  const getProductIcon = (products) => {
+    if (!products || !Array.isArray(products)) return <Package size={14} />;
+
+    const hasHerbs = products.some(p =>
+      p.category?.toLowerCase().includes('herb') ||
+      p.name?.toLowerCase().includes('herb') ||
+      p.type?.toLowerCase().includes('herb')
+    );
+
+    return hasHerbs ? <Leaf size={14} /> : <Package size={14} />;
   };
 
   return (
-    <div id='dashboard' className="bg-white rounded-lg shadow-md overflow-hidden w-full mx-auto">
-      <div className="p-4 border-b border-gray-200">
-        <h2 className="text-lg font-bold text-gray-800">Recent Orders</h2>
+    <div id='dashboard' className="bg-white rounded-lg shadow-lg overflow-hidden w-full mx-auto border border-green-100 max-w-full">
+      <div className="p-3 sm:p-4 border-b border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+        <div className="flex items-center space-x-2">
+          <Leaf className="text-green-600 flex-shrink-0" size={20} />
+          <div className="min-w-0 flex-1">
+            <h2 className="text-base sm:text-lg font-bold text-gray-800 truncate">Recent Orders - Shree Venkateswara Agros & Herbs</h2>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1">Agricultural products and herbal supplements</p>
+          </div>
+        </div>
       </div>
 
       {loading && (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <div className="flex flex-col items-center justify-center py-12 px-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mb-3"></div>
+          <span className="text-sm text-gray-600 text-center">Loading orders...</span>
         </div>
       )}
 
       {error && (
-        <div className="p-4">
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-4">
-            <span className="block sm:inline">{error}</span>
+        <div className="p-3 sm:p-4">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-3 rounded-lg relative mb-4">
+            <div className="flex items-start">
+              <svg className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              <span className="text-sm leading-relaxed break-words">{error}</span>
+            </div>
           </div>
-          <div className="flex space-x-2 justify-end">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:justify-end">
             <button
               onClick={handleRetry}
-              className="px-4 py-2 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition-colors shadow-sm"
             >
               Retry
             </button>
             {error.includes('log in') && (
               <button
                 onClick={handleLogin}
-                className="px-4 py-2 bg-green-500 text-white rounded text-sm hover:bg-green-600 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors shadow-sm"
               >
                 Log In
               </button>
@@ -190,50 +189,70 @@ const RecentOrders = () => {
       )}
 
       {!loading && !error && orders.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          No orders found.
+        <div className="text-center py-12 px-4">
+          <Leaf className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+          <p className="text-gray-500 text-base sm:text-lg">No orders found.</p>
+          <p className="text-gray-400 text-xs sm:text-sm mt-2">Orders will appear here once customers place them.</p>
         </div>
       )}
 
       {!loading && !error && orders.length > 0 && (
         <>
           {/* Desktop view - table format */}
-          <div className="hidden md:block overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="min-w-full bg-white">
-              <thead className="bg-gray-50">
+              <thead className="bg-green-50">
                 <tr>
-                  <th className="py-3 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                  <th className="py-3 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                  <th className="py-3 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="py-3 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th className="py-3 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="py-3 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Order ID</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Customer</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Products</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Date</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Amount</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Order Status</th>
+                  <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Payment</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {orders.map((order, index) => (
-                  <tr key={order.orderId || index} className="hover:bg-gray-50">
-                    <td className="py-3 px-4 uppercase whitespace-nowrap">
-                      {order.orderId ? `${order.orderId.slice(-6)}` : `${order._id?.slice(-6) || index}`}
+                  <tr key={order.orderId || order._id || index} className="hover:bg-green-50 transition-colors">
+                    <td className="py-3 px-2 sm:px-4 uppercase whitespace-nowrap font-mono text-xs sm:text-sm">
+                      #{order.orderId ? `${order.orderId.slice(-8)}` : `${order._id?.slice(-8) || `ORD${index.toString().padStart(3, '0')}`}`}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="font-medium text-gray-900">{order.name}</div>
-                      <div className="text-sm text-gray-500">{order.email}</div>
+                    <td className="py-3 px-2 sm:px-4">
+                      <div className="font-medium text-gray-900 text-sm">{order.customerName || order.name}</div>
+                      <div className="text-xs text-gray-500 truncate max-w-[150px]">{order.customerEmail || order.email}</div>
+                      {order.customerPhone && (
+                        <div className="text-xs text-gray-400">{order.customerPhone}</div>
+                      )}
                     </td>
-                    <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(order.orderDate)}
+                    <td className="py-3 px-2 sm:px-4">
+                      <div className="flex items-center">
+                        {getProductIcon(order.products || order.items)}
+                        <span className="ml-1 text-xs sm:text-sm">
+                          {order.products?.length || order.items?.length || 0} item(s)
+                        </span>
+                      </div>
+                      {order.products?.[0]?.name && (
+                        <div className="text-xs text-gray-500 mt-1 truncate max-w-[120px]">
+                          {order.products[0].name}
+                          {order.products.length > 1 && ` +${order.products.length - 1} more`}
+                        </div>
+                      )}
                     </td>
-                    <td className="py-3 px-4 whitespace-nowrap text-sm font-medium">
-                      ₹{order.totalAmount}
+                    <td className="py-3 px-2 sm:px-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                      {formatDate(order.createdAt || order.orderDate)}
                     </td>
-                    <td className="py-3 px-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.orderStatus)}`}>
-                        {order.orderStatus}
+                    <td className="py-3 px-2 sm:px-4 whitespace-nowrap text-xs sm:text-sm font-medium">
+                      ${order.totalAmount || order.total || 0}
+                    </td>
+                    <td className="py-3 px-2 sm:px-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${getStatusColor(order.orderStatus || order.status)}`}>
+                        {order.orderStatus || order.status || 'Pending'}
                       </span>
                     </td>
-                    <td className="py-3 px-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.paymentStatus)}`}>
-                        {order.paymentStatus}
+                    <td className="py-3 px-2 sm:px-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${getStatusColor(order.paymentStatus || order.payment?.status)}`}>
+                        {order.paymentStatus || order.payment?.status || 'Pending'}
                       </span>
                     </td>
                   </tr>
@@ -242,49 +261,68 @@ const RecentOrders = () => {
             </table>
           </div>
 
-          {/* Mobile view - card format */}
-          <div className="md:hidden">
+          {/* Mobile and Tablet view - card format */}
+          <div className="lg:hidden">
             <div className="divide-y divide-gray-200">
               {orders.map((order, index) => (
-                <div key={order.orderId || index} className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded">
-                        #{order.orderId ? order.orderId.slice(-6) : order._id?.slice(-6) || index}
+                <div key={order.orderId || order._id || index} className="p-3 sm:p-4 hover:bg-green-50 transition-colors">
+                  {/* Header row with Order ID and Status */}
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 space-y-2 sm:space-y-0">
+                    <div className="order-2 sm:order-1">
+                      <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
+                        #{order.orderId ? order.orderId.slice(-8) : order._id?.slice(-8) || `ORD${index.toString().padStart(3, '0')}`}
                       </span>
                     </div>
-                    <div className="flex space-x-1">
-                      <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${getStatusColor(order.orderStatus)}`}>
-                        {order.orderStatus}
+                    <div className="order-1 sm:order-2 flex flex-wrap gap-1">
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(order.orderStatus || order.status)}`}>
+                        {order.orderStatus || order.status || 'Pending'}
+                      </span>
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(order.paymentStatus || order.payment?.status)}`}>
+                        Pay: {order.paymentStatus || order.payment?.status || 'Pending'}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center mb-2">
-                    <User size={14} className="text-gray-400 mr-1" />
-                    <div>
-                      <div className="font-medium text-sm">{order.name}</div>
-                      <div className="text-xs text-gray-500">{order.email}</div>
+                  {/* Customer Information */}
+                  <div className="flex items-start mb-3">
+                    <User size={16} className="text-gray-400 mr-2 mt-1 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium text-sm text-gray-900 truncate">{order.customerName || order.name}</div>
+                      <div className="text-xs text-gray-500 truncate">{order.customerEmail || order.email}</div>
+                      {order.customerPhone && (
+                        <div className="text-xs text-gray-400 mt-1">{order.customerPhone}</div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  {/* Product Information */}
+                  <div className="flex items-center mb-3">
+                    <div className="flex-shrink-0 mr-2">
+                      {getProductIcon(order.products || order.items)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="text-sm text-gray-600">
+                        {order.products?.length || order.items?.length || 0} product(s)
+                      </span>
+                      {order.products?.[0]?.name && (
+                        <div className="text-xs text-gray-500 mt-1 truncate">
+                          {order.products[0].name}
+                          {order.products.length > 1 && ` +${order.products.length - 1} more`}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Date and Amount Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div className="flex items-center text-gray-500">
-                      <Calendar size={14} className="mr-1" />
-                      {formatDate(order.orderDate)}
+                      <Calendar size={14} className="mr-2 flex-shrink-0" />
+                      <span className="truncate">{formatDate(order.createdAt || order.orderDate)}</span>
                     </div>
 
-                    <div className="flex items-center font-medium">
-                      <span className="mr-1 text-gray-500">₹</span>
-                      {order.totalAmount}
-                    </div>
-
-                    <div className="flex items-center text-gray-500 col-span-2">
-                      <CreditCard size={14} className="mr-1" />
-                      Payment:
-                      <span className={`ml-1 px-1.5 py-0.5 text-xs rounded ${getStatusColor(order.paymentStatus)}`}>
-                        {order.paymentStatus}
-                      </span>
+                    <div className="flex items-center font-medium text-sm">
+                      <CreditCard size={14} className="mr-2 flex-shrink-0 text-gray-500" />
+                      <span className="text-gray-900">${order.totalAmount || order.total || 0}</span>
                     </div>
                   </div>
                 </div>

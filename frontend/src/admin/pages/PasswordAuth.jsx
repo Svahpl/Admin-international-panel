@@ -105,7 +105,7 @@ const PasswordAuth = () => {
         setError("");
 
         try {
-            const otpResponse = await axiosInstance.post(`http://localhost:8000/api/auth/otp-for-password`, { Email : email });
+            const otpResponse = await axiosInstance.post(`${import.meta.env.VITE_BACKEND}/api/auth/otp-for-password`, { Email : email });
 
             if (otpResponse && otpResponse.data) {
                 setIsOtpSent(true);
@@ -161,7 +161,7 @@ const PasswordAuth = () => {
         setError("");
 
         try {
-            const verifyOtpResponse = await axiosInstance.post(`http://localhost:8000/api/auth/verify-email`, {
+            const verifyOtpResponse = await axiosInstance.post(`${import.meta.env.VITE_BACKEND}/api/auth/verify-email`, {
                 Email : email,
                 userOtp: otpString,
             });
@@ -202,7 +202,7 @@ const PasswordAuth = () => {
         setError("");
 
         try {
-            const resetResponse = await axiosInstance.post(`http://localhost:8000/api/auth/reset-password`, {
+            const resetResponse = await axiosInstance.post(`${import.meta.env.VITE_BACKEND}/api/auth/reset-password`, {
                 Email :email,
                 newPassword,
             });

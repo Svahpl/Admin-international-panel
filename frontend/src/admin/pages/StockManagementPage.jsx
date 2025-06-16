@@ -65,7 +65,7 @@ const ProductManagementPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:8000/api/product/get-all',{
+      const response = await axios.get('${import.meta.env.VITE_BACKEND}/api/product/get-all',{
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -135,7 +135,7 @@ const ProductManagementPage = () => {
         }
       });
 
-      const response = await axios.delete(`http://localhost:8000/api/product/delete-product/${id}`,{
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND}/api/product/delete-product/${id}`,{
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -231,7 +231,7 @@ const ProductManagementPage = () => {
 
       // Call the update API
       const response = await axios.put(
-        `http://localhost:8000/api/product/update-product/${productId}`,
+        `${import.meta.env.VITE_BACKEND}/api/product/update-product/${productId}`,
         formData,
         {
           headers: {
@@ -622,7 +622,7 @@ const ProductManagementPage = () => {
                         {product.title}
                       </h2>
                       <div className="text-base sm:text-lg font-bold text-green-600 ml-2 flex-shrink-0">
-                        ₹{product.price?.toFixed(2) || '0.00'}
+                        ${product.price?.toFixed(2) || '0.00'}
                       </div>
                     </div>
 
@@ -758,7 +758,7 @@ const ProductManagementPage = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        💰 Price (₹) *
+                        💰 Price ($) *
                       </label>
                       <input
                         type="number"
