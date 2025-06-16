@@ -110,10 +110,17 @@ const AddItemsPage = () => {
       });
 
       // Make actual API call
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product/add`, {
-        body: formDataForSubmit,
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/product/add`,
+        formDataForSubmit, // body should be second argument
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'multipart/form-data' // assuming you're sending FormData
+          }
+        }
+      );
+      
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

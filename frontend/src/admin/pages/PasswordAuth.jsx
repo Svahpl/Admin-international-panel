@@ -21,7 +21,7 @@ const PasswordAuth = () => {
 
     // Create axios instance with timeout and common headers
     const axiosInstance = axios.create({
-        timeout: 10000, // 10 seconds timeout
+        timeout: 10000, 
         headers: {
             'Content-Type': 'application/json'
         }
@@ -105,7 +105,7 @@ const PasswordAuth = () => {
         setError("");
 
         try {
-            const otpResponse = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/otp-for-password`, { Email : email });
+            const otpResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/otp-for-password`, { Email : email });
 
             if (otpResponse && otpResponse.data) {
                 setIsOtpSent(true);
@@ -161,7 +161,7 @@ const PasswordAuth = () => {
         setError("");
 
         try {
-            const verifyOtpResponse = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`, {
+            const verifyOtpResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`, {
                 Email : email,
                 userOtp: otpString,
             });
@@ -202,7 +202,7 @@ const PasswordAuth = () => {
         setError("");
 
         try {
-            const resetResponse = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
+            const resetResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
                 Email :email,
                 newPassword,
             });
