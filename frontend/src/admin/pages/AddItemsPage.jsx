@@ -116,14 +116,13 @@ const AddItemsPage = () => {
         {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token'), 
-            Content-Type': 'multipart/form-data'
           }
         }
       );
       
 
       if (!result .data) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${result.status}`);
       }
 
       
@@ -160,7 +159,14 @@ const AddItemsPage = () => {
       setIsSubmitting(false);
     }
   };
-
+  
+useEffect(() => {
+  return () => {
+    images.forEach(img => {
+      URL.revokeObjectURL(img.preview);
+    });
+  };
+}, [images]);
   // Cool and Simple Loader Component
   const CoolSimpleLoader = () => (
     <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50">
