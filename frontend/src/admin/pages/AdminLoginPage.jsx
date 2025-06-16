@@ -18,7 +18,7 @@ const AdminLoginPage = () => {
         setLoginLoading(true);
 
         // Use environment variable for login URL
-        const loginUrl = `http://localhost:8000/api/auth/login`;
+        const loginUrl = `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`;
 
         console.log("Backend URL:", backendUrl);
         console.log("Login URL:", loginUrl);

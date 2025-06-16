@@ -26,7 +26,7 @@ const AdminSignupPage = () => {
         setSignupLoading(true);
 
         // Use environment variable for signup URL
-        const signupUrl = `http://localhost:8000/api/auth/adminSignup`;
+        const signupUrl = `${import.meta.env.VITE_BACKEND_URL}/api/auth/adminSignup`;
 
         console.log("Backend URL:", backendUrl);
         console.log("Signup URL:", signupUrl);

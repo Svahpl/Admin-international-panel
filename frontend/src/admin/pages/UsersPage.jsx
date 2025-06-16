@@ -25,7 +25,7 @@ export default function UserPage() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8000/api/auth/getalluser`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/getalluser`, {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
@@ -77,7 +77,7 @@ export default function UserPage() {
       setDeletingId(id);
       setShowConfirmDialog(false);
 
-      const response = await axios.delete(`http://localhost:8000/api/auth/deleteuser/${id}`, {
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/auth/deleteuser/${id}`, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
         },
@@ -150,7 +150,7 @@ export default function UserPage() {
 
       // Use the new admin Email sending endpoint
       const response = await axios.post(
-        `http://localhost:8000/api/auth/send-Email`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/send-Email`,
         {
           name: selectedUser.FullName,
           email: selectedUser.Email,
