@@ -111,7 +111,7 @@ const AddItemsPage = () => {
       });
 
       // Make actual API call
-      const result  = await axios.post(
+      const responce  = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/product/add`,
         formDataForSubmit, 
         {
@@ -121,9 +121,10 @@ const AddItemsPage = () => {
           }
         }
       );
-      
 
-      if (!result .data) {
+      const result = responce.data;
+
+      if (!result) {
         throw new Error(`HTTP error! status: ${result.status}`);
       }
 
