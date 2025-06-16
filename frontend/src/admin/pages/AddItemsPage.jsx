@@ -110,7 +110,7 @@ const AddItemsPage = () => {
       });
 
       // Make actual API call
-      const response = await axios.post(
+      const result  = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/product/add`,
         formDataForSubmit, 
         {
@@ -121,11 +121,11 @@ const AddItemsPage = () => {
       );
       
 
-      if (!response.data) {
+      if (!result .data) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
+      
 
       // Success notification
       showNotification('success', 'Product Added Successfully!', 'Your agricultural product has been added to the inventory.');
