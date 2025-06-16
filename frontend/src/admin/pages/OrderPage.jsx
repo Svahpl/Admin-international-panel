@@ -265,7 +265,7 @@ const OrdersList = () => {
 
     if (loading) {
         return (
-            <div className="w-full max-w-6xl mx-auto p-4 flex justify-center items-center h-64">
+            <div id="mid-loader" className="w-full max-w-6xl mx-auto p-4 flex justify-center items-center h-64">
                 <div className="text-center">
                     <div className="flex items-center justify-center mb-4">
                         <Leaf className="animate-pulse h-8 w-8 text-green-600 mr-2" />
