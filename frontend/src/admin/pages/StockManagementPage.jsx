@@ -65,7 +65,7 @@ const ProductManagementPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('${import.meta.env.VITE_BACKEND}/api/product/get-all',{
+      const response = await axios.get('http://localhost:8000/api/product/get-all',{
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -135,7 +135,7 @@ const ProductManagementPage = () => {
         }
       });
 
-      const response = await axios.delete(`${import.meta.env.VITE_BACKEND}/api/product/delete-product/${id}`,{
+      const response = await axios.delete(`http://localhost:8000/api/product/delete-product/${id}`,{
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
@@ -231,7 +231,7 @@ const ProductManagementPage = () => {
 
       // Call the update API
       const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND}/api/product/update-product/${productId}`,
+        `http://localhost:8000/api/product/update-product/${productId}`,
         formData,
         {
           headers: {

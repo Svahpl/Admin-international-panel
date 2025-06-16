@@ -7,73 +7,36 @@ import { Link } from "react-router-dom";
 
 const AdminLoginPage = () => {
     const navigate = useNavigate();
-
-    // Add fallback for backend URL
-    const backendUrl = import.meta.env.VITE_BACKEND || 'http://localhost:5000';
-
-    // Debug: Log environment variables
-    console.log("All env vars:", import.meta.env);
-    console.log("VITE_BACKEND:", import.meta.env.VITE_BACKEND);
+    const backendUrl = import.meta.env.VITE_BACKEND;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginLoading, setLoginLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoginLoading(true);
 
-        // Clean the backend URL and ensure proper format
-        const cleanBackendUrl = backendUrl?.replace(/\/+$/, ''); // Remove trailing slashes
-        const loginUrl = `${cleanBackendUrl}/api/auth/login`;
+        // Use environment variable for login URL
+        const loginUrl = `http://localhost:8000/api/auth/login`;
 
         console.log("Backend URL:", backendUrl);
-        console.log("Clean Backend URL:", cleanBackendUrl);
         console.log("Login URL:", loginUrl);
         console.log("Sending data:", { Email: email, Password: password });
 
         try {
-            // First, let's try a simple GET request to check if the backend is accessible
-            console.log("Testing backend connectivity...");
-
-            // Try the request with lowercase field names first
-            let res;
-            try {
-                res = await axios.post(
-                    loginUrl,
-                    {
-                        email: email,        // Try lowercase field names
-                        password: password   // Try lowercase field names
+            const res = await axios.post(
+                loginUrl,
+                {
+                    Email: email,    // Match backend expectation
+                    Password: password  // Match backend expectation
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
                     },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json"
-                        },
-                        timeout: 30000,
-                        withCredentials: false
-                    }
-                );
-            } catch (firstError) {
-                console.log("First attempt (lowercase) failed, trying uppercase...");
-                // If lowercase fails, try uppercase field names
-                res = await axios.post(
-                    loginUrl,
-                    {
-                        Email: email,        // Try uppercase field names
-                        Password: password   // Try uppercase field names
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json"
-                        },
-                        timeout: 30000,
-                        withCredentials: false
-                    }
-                );
-            }
+                }
+            );
 
             if (res.status === 200) {
                 toast.success("Login Successful!");
@@ -84,10 +47,9 @@ const AdminLoginPage = () => {
                 localStorage.setItem("isAdmin", res.data.isAdmin);
 
                 console.log("Token stored:", localStorage.getItem("token"));
-                console.log("Response data:", res.data);
 
                 // Navigate based on admin status
-                if (res.data.isAdmin === "true" || res.data.isAdmin === true) {
+                if (res.data.isAdmin === "true") {
                     navigate("/admin-dashboard");
                 } else {
                     navigate("/");
@@ -95,40 +57,21 @@ const AdminLoginPage = () => {
             }
 
         } catch (error) {
-            console.error("Full error object:", error);
-
             if (error.response) {
-                // Server responded with error status
                 const status = error.response.status;
-                const message = error.response.data?.msg || error.response.data?.message || "Server error";
+                const message = error.response.data.msg || error.response.data.message;
 
-                console.log("Error response:", error.response.data);
-
-                if (status === 400) {
-                    toast.error(message || "Bad request - please check your input");
-                } else if (status === 401) {
+                if (status === 400 || status === 401) {
                     toast.error(message || "Invalid credentials");
-                } else if (status === 404) {
-                    toast.error("Login endpoint not found - check your backend URL");
-                } else if (status === 502 || status === 503) {
-                    toast.error("Backend server is temporarily unavailable");
-                } else if (status === 500) {
-                    toast.error("Internal server error");
                 } else {
-                    toast.error(`Server error: ${status} - ${message}`);
+                    toast.error("Something went wrong!");
                 }
             } else if (error.request) {
-                // Network error - no response received
-                console.log("Network error:", error.request);
-                toast.error("Cannot connect to server. Please check if the backend is running.");
-            } else if (error.code === 'ECONNABORTED') {
-                // Timeout error
-                toast.error("Request timeout. Please try again.");
+                toast.error("Network error. Please check your connection.");
             } else {
-                // Other errors
-                console.log("Other error:", error.message);
-                toast.error("An unexpected error occurred!");
+                toast.error("Internal Server Error!");
             }
+            console.log(`Error during login: ${error}`);
         } finally {
             setLoginLoading(false);
         }
@@ -140,7 +83,7 @@ const AdminLoginPage = () => {
             <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 m-4">
                 <div className="text-center mb-6">
                     <h1 className="text-3xl font-bold text-green-800 mb-1">
-                        Shree Venkateswara
+                        Shree Venkateswara 
                     </h1>
                     <h2 className="text-xl font-semibold text-green-700 mb-3">
                         Agros and Herbs
@@ -149,13 +92,6 @@ const AdminLoginPage = () => {
                         Access premium agricultural products and herbal solutions
                     </p>
                 </div>
-
-                {/* Debug info - remove in production */}
-                {process.env.NODE_ENV === 'development' && (
-                    <div className="mb-4 p-2 bg-gray-100 rounded text-xs">
-                        <strong>Debug:</strong> Backend URL: {backendUrl}
-                    </div>
-                )}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-5">
@@ -205,7 +141,7 @@ const AdminLoginPage = () => {
 
                     <button
                         type="submit"
-                        className="w-full bg-green-700 text-white py-3 rounded-md font-medium uppercase tracking-wide hover:bg-green-800 transition duration-200 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-green-700 text-white py-3 rounded-md font-medium uppercase tracking-wide hover:bg-green-800 transition duration-200 flex justify-center items-center"
                         disabled={loginLoading || googleLoading}
                     >
                         {loginLoading ? "Processing..." : "Login"}

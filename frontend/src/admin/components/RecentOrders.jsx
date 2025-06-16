@@ -10,7 +10,7 @@ const RecentOrders = () => {
   const [error, setError] = useState(null);
 
   // Unified API endpoint - use the same endpoint for both initial fetch and retry
-  const API_ENDPOINT = `${import.meta.env.VITE_BACKEND}/api/order/getOrders`;
+  const API_ENDPOINT = `http://localhost:8000/api/order/getOrders`;
   const fetchOrders = async () => {
     try {
       setLoading(true);

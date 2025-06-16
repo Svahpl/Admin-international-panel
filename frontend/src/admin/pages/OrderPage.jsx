@@ -19,7 +19,7 @@ const OrdersList = () => {
 
     // Create api instance
     const api = axios.create({
-        baseURL: `${import.meta.env.VITE_BACKEND}/api`
+        baseURL: `http://localhost:8000/api`
     });
 
     // Set up authentication and fetch data
