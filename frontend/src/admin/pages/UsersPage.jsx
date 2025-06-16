@@ -19,7 +19,7 @@ export default function UserPage() {
   const [subject, setSubject] = useState(''); // Subject field
   const [sendingMessage, setSendingMessage] = useState(false);
 
-  const backendUrl = import.meta.env.VITE_BACKEND
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
 
   useEffect(() => {
     const fetchUsers = async () => {

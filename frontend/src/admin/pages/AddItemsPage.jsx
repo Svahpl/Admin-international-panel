@@ -112,17 +112,16 @@ const AddItemsPage = () => {
       // Make actual API call
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/product/add`,
-        formDataForSubmit, // body should be second argument
+        formDataForSubmit, 
         {
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'multipart/form-data' // assuming you're sending FormData
+            Authorization: 'Bearer ' + localStorage.getItem('token'), 
           }
         }
       );
       
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 

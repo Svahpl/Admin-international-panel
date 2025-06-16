@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const AdminLoginPage = () => {
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
