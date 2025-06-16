@@ -5,6 +5,7 @@ import {
   CreditCard, Tag, LineChart, Settings,
   Menu, X, LayoutDashboard
 } from 'lucide-react';
+import adminImage from '../../public/VAH_20241202_232229_0000_page-0001.jpg';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -74,7 +75,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <div className="p-4 flex items-center justify-between">
           <Link to="/dashboard" className={`font-bold ${isOpen ? 'block' : 'hidden md:hidden'}`}>
           <div className='flex flex-row'>
-              <img className='w-8 h-8 rounded-full' src="/src/public/VAH_20241202_232229_0000_page-0001.jpg" alt="error" />
+              <img className='w-8 h-8 rounded-full' src={adminImage} alt="error" />
               <span className='ml-12 text-xl'>SVAH</span>
           </div>
             
