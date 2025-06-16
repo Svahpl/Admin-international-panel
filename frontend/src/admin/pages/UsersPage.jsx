@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Trash2, User, Search, AlertTriangle, MessageSquare, Send } from 'lucide-react';
+import { Trash2, User, Search, AlertTriangle, MessageSquare, Send, Loader, Leaf } from 'lucide-react';
 import axios from "axios";
 import swal from 'sweetalert';
 
@@ -195,8 +195,14 @@ export default function UserPage() {
 
   if (loading) {
     return (
-      <div className="bg-gray-50 min-h-screen p-2 flex items-center justify-center">
-        <div className="text-base">Loading users...</div>
+      <div id="mid-loader" className="w-full max-w-6xl mx-auto p-4 flex justify-center items-center h-64">
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-4">
+            <Leaf className="animate-pulse h-8 w-8 text-green-600 mr-2" />
+            <Loader className="animate-spin h-8 w-8 text-green-600" />
+          </div>
+          <p className="text-green-700 font-medium">Loading User...</p>
+        </div>
       </div>
     );
   }
