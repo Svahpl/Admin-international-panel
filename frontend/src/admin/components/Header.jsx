@@ -20,7 +20,7 @@ const Header = ({ isOpen }) => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/user`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/admin`, {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           },
