@@ -82,7 +82,7 @@ const Header = ({ isOpen }) => {
           >
             {isAdmin ? (
               <img
-                src="public/VAH_20241202_232229_0000_page-0001.jpg"
+                src="VAH_20241202_232229_0000_page-0001.jpg"
                 alt="Admin"
                 className="w-8 h-8 rounded-full"
               />
