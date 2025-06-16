@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { LogOut ,User } from "lucide-react";
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Header = ({ isOpen }) => {
   const location = useLocation();
@@ -82,7 +83,7 @@ const Header = ({ isOpen }) => {
           >
             {isAdmin ? (
               <img
-                src="/src/public/VAH_20241202_232229_0000_page-0001.jpg"
+                src="/VAH_20241202_232229_0000_page-0001.jpg"
                 alt="Admin"
                 className="w-8 h-8 rounded-full"
               />
@@ -93,7 +94,7 @@ const Header = ({ isOpen }) => {
 
             {isAdmin ? (<span className="font-medium">
               {adminData}
-            </span>): " "}
+            </span>): ""}
           </div>
 
           {showLogout && isAdmin && (
