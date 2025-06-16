@@ -82,7 +82,7 @@ const AdminSignupPage = () => {
     };
 
     return (
-        <div id="signup" className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-50 to-green-100">
+        <div id="stock"  className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-50 to-green-100">
             <ToastContainer position="top-center" autoClose={3000} />
             <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 m-4">
                 <div className="text-center mb-6">
