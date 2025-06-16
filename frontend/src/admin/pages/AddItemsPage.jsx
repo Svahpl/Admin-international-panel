@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Upload, Leaf, Sparkles } from 'lucide-react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const AddItemsPage = () => {
   const [formData, setFormData] = useState({
