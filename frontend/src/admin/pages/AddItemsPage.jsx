@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { X, Upload, Leaf, Sparkles } from 'lucide-react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import { useEffect } from 'react';
 
 const AddItemsPage = () => {
   const [formData, setFormData] = useState({
@@ -111,24 +110,22 @@ const AddItemsPage = () => {
       });
 
       // Make actual API call
-      const responce  = await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/product/add`,
         formDataForSubmit, 
         {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token'), 
-            'Content-Type': 'multipart/form-data'
           }
         }
       );
-
-      const result = responce.data;
+      
+      const result = response.data;
 
       if (!result) {
-        throw new Error(`HTTP error! status: ${result.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      
 
       // Success notification
       showNotification('success', 'Product Added Successfully!', 'Your agricultural product has been added to the inventory.');
@@ -162,14 +159,7 @@ const AddItemsPage = () => {
       setIsSubmitting(false);
     }
   };
-  
-useEffect(() => {
-  return () => {
-    images.forEach(img => {
-      URL.revokeObjectURL(img.preview);
-    });
-  };
-}, [images]);
+
   // Cool and Simple Loader Component
   const CoolSimpleLoader = () => (
     <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50">
