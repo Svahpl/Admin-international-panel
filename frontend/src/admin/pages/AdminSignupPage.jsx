@@ -6,7 +6,7 @@ import "../pages/page.css"
 import { Link } from "react-router-dom";
 const AdminSignupPage = () => {
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");

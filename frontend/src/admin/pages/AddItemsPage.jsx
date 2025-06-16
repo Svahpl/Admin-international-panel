@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Upload, Leaf, Sparkles } from 'lucide-react';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const AddItemsPage = () => {
   const [formData, setFormData] = useState({
@@ -109,11 +110,9 @@ const AddItemsPage = () => {
       });
 
       // Make actual API call
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/product/add`, {
-        method: 'POST',
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product/add`, {
         body: formDataForSubmit,
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}
-
       });
 
       if (!response.ok) {

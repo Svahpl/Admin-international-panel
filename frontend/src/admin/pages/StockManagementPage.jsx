@@ -65,7 +65,7 @@ const ProductManagementPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/product/get-all',{
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product/get-all`,{
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }

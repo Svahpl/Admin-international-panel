@@ -28,7 +28,7 @@ const PasswordAuth = () => {
     });
 
     // Get backend URL from environment variables
-    const backendUrl = import.meta.env.VITE_BACKEND || '';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
     // Check if backend URL is configured properly
     useEffect(() => {
