@@ -142,7 +142,7 @@ const RecentOrders = () => {
 
   return (
     <div id='dashboard' className="bg-white rounded-lg shadow-lg overflow-hidden w-full mx-auto border border-green-100 max-w-full">
-      <div className="p-3 sm:p-4 border-b border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+      <div className="p-15 sm:p-8 border-b border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
         <div className="flex items-center space-x-2">
           <Leaf className="text-green-600 flex-shrink-0" size={20} />
           <div className="min-w-0 flex-1">
