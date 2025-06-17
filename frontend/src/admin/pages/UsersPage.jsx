@@ -216,7 +216,7 @@ export default function UserPage() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen p-2 md:p-6 -ml-16 sm:ml-6 md:ml-6 lg:ml-6">
+    <div className="bg-gray-50 mt-5 min-h-screen p-2 md:p-6 -ml-16 sm:ml-6 md:ml-6 lg:ml-6">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {/* Header */}
