@@ -617,6 +617,9 @@ const OrdersList = () => {
                                                                             <span className="font-medium">Quantity:</span> {item.quantity || 1}
                                                                         </div>
                                                                         <div>
+                                                                            <span className="font-medium">Weight:</span> {item.weight || 1} Kg
+                                                                        </div>
+                                                                        <div>
                                                                             <span className="font-medium">Price:</span> ＄{(item.price || item.product?.price || 0).toFixed(2)}
                                                                         </div>
                                                                         <div>
