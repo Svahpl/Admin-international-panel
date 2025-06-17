@@ -19,7 +19,7 @@ function ProtectedRoute({ element }) {
 
   useEffect(() => {
     if (isAdmin !== "true" && !hasShownToast.current) {
-      setTimeout(() => toast.error("Only admin can login"),100)
+      setTimeout(() => toast.error("Only admins can access"),100)
       hasShownToast.current = true;
     }
   }, [isAdmin]);
