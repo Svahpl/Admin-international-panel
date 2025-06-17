@@ -243,7 +243,7 @@ const RecentOrders = () => {
                       {formatDate(order.createdAt || order.orderDate)}
                     </td>
                     <td className="py-3 px-2 sm:px-4 whitespace-nowrap text-xs sm:text-sm font-medium">
-                      ${order.totalAmount || order.total || 0}
+                      ${order.totalAmount.toFixed(2) || order.total || 0}
                     </td>
                     <td className="py-3 px-2 sm:px-4 whitespace-nowrap">
                       <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${getStatusColor(order.orderStatus || order.status)}`}>
