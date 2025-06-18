@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Users, Package, ShoppingCart, BarChart3,
   CreditCard, Tag, LineChart, Settings,
-  Menu, X, LayoutDashboard
+  Menu, X, LayoutDashboard, MessageSquare
 } from 'lucide-react';
 import adminImage from '../../public/VAH_20241202_232229_0000_page-0001.jpg';
 
@@ -44,6 +44,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { icon: <Package size={20} />, title: 'All Orders', description: 'Track & manage orders', path: '/orders' },
     { icon: <ShoppingCart size={20} />, title: 'Add Items', description: 'Add new products', path: '/add-items' },
     { icon: <BarChart3 size={20} />, title: 'Stock Management', description: 'Monitor inventory', path: '/stock' },
+    { icon: <MessageSquare size={20} />, title: 'Messages', description: 'View customer messages', path: '/message' },
   ];
 
   return (
@@ -57,7 +58,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       )}
 
       {/* Mobile menu button - fixed at top left corner */}
-     {!isOpen ? (<button
+      {!isOpen ? (<button
         id="menu-button"
         onClick={toggleSidebar}
         className="md:hidden fixed top-4 left-4 z-30 p-2 bg-gray-800 text-white rounded-lg shadow-lg"
@@ -74,11 +75,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       >
         <div className="p-4 flex items-center justify-between">
           <Link to="/dashboard" className={`font-bold ${isOpen ? 'block' : 'hidden md:hidden'}`}>
-          <div className='flex flex-row'>
+            <div className='flex flex-row'>
               <img className='w-8 h-8 rounded-full' src={adminImage} alt="error" />
               <span className='ml-12 text-xl'>SVAH</span>
-          </div>
-            
+            </div>
+
           </Link>
           <button onClick={toggleSidebar} className="p-2 hover:bg-gray-800 rounded-lg ml-auto">
             {isOpen ? <X size={20} /> : <Menu size={20} className="hidden md:block" />}
