@@ -382,7 +382,7 @@ const OrdersList = () => {
                                         setShowSidebar(false);
                                     }}
                                 >
-                                    Recent First
+                                    Recent 
                                 </button>
                                 <button
                                     className={`w-full text-left px-4 py-2 rounded-md transition-colors ${sortBy === 'Oldest'
@@ -394,7 +394,7 @@ const OrdersList = () => {
                                         setShowSidebar(false);
                                     }}
                                 >
-                                    Oldest First
+                                    Oldest 
                                 </button>
                             </div>
                         </div>
