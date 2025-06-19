@@ -329,7 +329,6 @@ const Message = () => {
 
                         {/* Filters */}
                         <div className="flex items-center space-x-2">
-                            <Filter className="w-5 h-5 text-gray-400" />
                             <div className="flex space-x-2">
                                 {['all', 'sales', 'requirements'].map((filter) => (
                                     <button
