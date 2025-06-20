@@ -534,6 +534,7 @@ const OrdersList = () => {
                                         <div><span className="text-blue-600 font-medium">Order Date: </span>{selectedOrder.orderDate.toLocaleDateString()}</div>
                                         <div><span className="text-blue-600 font-medium">Payment Status: </span>{selectedOrder.paymentStatus || 'N/A'}</div>
                                         <div><span className="text-blue-600 font-medium">Expected Delivery: </span>{selectedOrder.expectedDelivery ? new Date(selectedOrder.expectedDelivery).toLocaleDateString() : 'N/A'}</div>
+                                        <div><span className="text-blue-600 font-medium">shipping method: </span>{selectedOrder.shippingMethod || 'N/A'}</div>
                                         <div><span className="text-blue-600 font-medium">Total Amount: </span>＄{selectedOrder.totalAmount?.toFixed(2) || '0.00'}</div>
                                     </div>
                                 </div>
