@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Package, Truck, Check, CreditCard, Calendar, Loader, X, Filter, ChevronRight, Leaf, ShoppingCart, User, Hash, Image } from 'lucide-react';
 import Swal from 'sweetalert2';
 import "../pages/page.css"
+import { toast, ToastContainer } from 'react-toastify';
 
 const OrdersList = () => {
     // State for orders data
@@ -225,17 +226,7 @@ const OrdersList = () => {
                 // Update the selected order
                 setSelectedOrder(prev => ({ ...prev, orderStatus: selectedOrderStatus }));
 
-                // Show success message
-                Swal.fire({
-                    title: 'Success!',
-                    text: `Order status updated to ${selectedOrderStatus}`,
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                    customClass: {
-                        confirmButton: 'bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700'
-                    }
-                });
-
+                toast.success(`Order status updated to ${selectedOrderStatus}`);
                 setShowModal(false);
             } else {
                 throw new Error(response.data.message || 'Failed to update order status');
@@ -244,15 +235,7 @@ const OrdersList = () => {
             console.error('Error updating order status:', error);
 
             // Show error message
-            Swal.fire({
-                title: 'Error!',
-                text: `Failed to update order status: ${error.response?.data?.message || error.message}`,
-                icon: 'error',
-                confirmButtonText: 'OK',
-                customClass: {
-                    confirmButton: 'bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700'
-                }
-            });
+            toast.error(`Failed to update order status: ${error.response?.data?.message || error.message}`)
         } finally {
             setUpdatingStatus(false);
         }
@@ -293,6 +276,7 @@ const OrdersList = () => {
 
     return (
         <div id='orderview' className="w-full max-w-7xl mx-auto p-2 sm:p-4 bg-gradient-to-br from-green-50 to-white min-h-screen">
+            <ToastContainer position="top-center" autoClose={3000} />
             {/* Header Section */}
             <div className="text-center mb-6">
                 <div className="flex items-center justify-center mb-2">

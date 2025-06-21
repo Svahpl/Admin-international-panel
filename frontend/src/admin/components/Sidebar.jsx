@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Users, Package, ShoppingCart, BarChart3,
   CreditCard, Tag, LineChart, Settings,
-  Menu, X, LayoutDashboard, MessageSquare
+  Menu, X, LayoutDashboard, MessageSquare, Truck
 } from 'lucide-react';
 import adminImage from '../../public/VAH_20241202_232229_0000_page-0001.jpg';
 
@@ -45,6 +45,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { icon: <ShoppingCart size={20} />, title: 'Add Items', description: 'Add new products', path: '/add-items' },
     { icon: <BarChart3 size={20} />, title: 'Stock Management', description: 'Monitor inventory', path: '/stock' },
     { icon: <MessageSquare size={20} />, title: 'Messages', description: 'View customer messages', path: '/message' },
+    { icon: <Truck size={20} />, title: 'Delivery Price Set', description: 'Manage delivery pricing', path: '/charge' },
   ];
 
   return (
@@ -86,7 +87,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </button>
         </div>
 
-        <nav className="mt-4">
+        <nav className="-mt-4">
           {menuItems.map((item, index) => (
             <Link
               key={index}

@@ -139,10 +139,10 @@ const Message = () => {
     };
 
     const MessageCard = ({ item }) => (
-        <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
+        <div  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
             <div className="p-6">
                 {/* Header */}
-                <div className="flex items-start justify-between mb-4">
+                <div  className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3">
                         <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                             <User className="w-6 h-6 text-white" />
@@ -218,7 +218,7 @@ const Message = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+            <div id='stock' className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
                     <p className="text-gray-600">Loading messages...</p>
