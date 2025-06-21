@@ -28,8 +28,8 @@ const AdminLoginPage = () => {
             const res = await axios.post(
                 loginUrl,
                 {
-                    Email: email,    // Match backend expectation
-                    Password: password  // Match backend expectation
+                    Email: email,    
+                    Password: password  
                 },
                 {
                     headers: {

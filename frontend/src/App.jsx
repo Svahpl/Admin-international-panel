@@ -13,6 +13,7 @@ import AdminLoginPage  from "./admin/pages/AdminLoginPage"
 import AdminSignupPage from "./admin/pages/AdminSignupPage";
 import PasswordAuth from "./admin/pages/PasswordAuth";
 import Messages from "./admin/pages/Messege";
+import Adddeliverycharge from "./admin/pages/Adddeliverycharge";
 function ProtectedRoute({ element }) {
   const token = localStorage.getItem("token");
   const isAdmin = localStorage.getItem("isAdmin");
@@ -91,6 +92,10 @@ function App() {
           <Route
             path="/message"
             element={<ProtectedRoute element={<Messages />} />}
+          />
+          <Route
+            path="/charge"
+            element={<ProtectedRoute element={<Adddeliverycharge />} />}
           />
           <Route path='/password-auth' element={<PasswordAuth />} />
 
