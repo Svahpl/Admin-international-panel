@@ -747,7 +747,9 @@ const OrdersList = () => {
 
                             {/* Action Buttons */}
 
-                               {selectedOrderStatus !== selectedOrder.orderStatus && (
+                            
+                            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
+                                {selectedOrderStatus !== selectedOrder.orderStatus && (
                                     <button
                                         onClick={handleSaveChanges}
                                         disabled={updatingStatus}
@@ -767,8 +769,6 @@ const OrdersList = () => {
                                     </button>
                                 )}
 
-                            
-                            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
                                 <button
                                     onClick={() => setShowModal(false)}
                                     className="px-6 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors border border-gray-300"
