@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plane, Ship, Save, RefreshCw, DollarSign, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Plane, Ship, Save, RefreshCw, DollarSign, X, CheckCircle, AlertCircle, IndianRupee } from 'lucide-react';
 
 // Normal React Toast Component - Top Center
 const Toast = ({ message, type, onClose }) => {
@@ -73,7 +73,7 @@ function Adddeliverycharge() {
     const fetchCharges = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/charge/getcharge`);
+            const response = await fetch(`http://localhost:8000/api/charge/getcharge`);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch charges');
@@ -145,7 +145,7 @@ function Adddeliverycharge() {
 
             console.log('Sending data:', requestData); // Debug log
 
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/charge/update-deliverycharge`, {
+            const response = await fetch(`http://localhost:8000/api/charge/update-deliverycharge`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ function Adddeliverycharge() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center space-x-3">
                             <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
-                                <DollarSign className="text-blue-600" size={20} />
+                                <IndianRupee className="text-blue-600" size={20} />
                             </div>
                             <div className="min-w-0">
                                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">Delivery Charges</h1>
@@ -237,7 +237,7 @@ function Adddeliverycharge() {
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <DollarSign className="text-gray-400" size={16} />
+                                        <IndianRupee className="text-gray-400" size={16} />
                                     </div>
                                     <input
                                         type="number"
@@ -260,7 +260,7 @@ function Adddeliverycharge() {
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <DollarSign className="text-gray-400" size={16} />
+                                        <IndianRupee className="text-gray-400" size={16} />
                                     </div>
                                     <input
                                         type="number"
@@ -308,7 +308,7 @@ function Adddeliverycharge() {
                                     <div className="min-w-0">
                                         <p className="text-xs sm:text-sm text-blue-600 font-medium">Air Delivery</p>
                                         <p className="text-lg sm:text-xl font-bold text-blue-900 truncate">
-                                            ${charges.air || '0.00'}
+                                            ₹{charges.air || '0.00'}
                                         </p>
                                     </div>
                                 </div>
@@ -319,7 +319,7 @@ function Adddeliverycharge() {
                                     <div className="min-w-0">
                                         <p className="text-xs sm:text-sm text-green-600 font-medium">Ship Delivery</p>
                                         <p className="text-lg sm:text-xl font-bold text-green-900 truncate">
-                                            ${charges.ship || '0.00'}
+                                            ₹{charges.ship || '0.00'}
                                         </p>
                                     </div>
                                 </div>
