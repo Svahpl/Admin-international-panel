@@ -812,13 +812,13 @@ const OrdersList = () => {
 
                 <div className="bg-white rounded-lg p-4 shadow-md border border-green-100">
                     <div className="flex items-center gap-2">
-                        <div className="p-2 bg-emerald-100 rounded-lg">
-                            <CreditCard className="h-5 w-5 text-emerald-600" />
+                        <div className="p-2 bg-red-200 rounded-lg">
+                            <ShoppingCart className="h-5 w-5 text-red-600" />
                         </div>
                         <div>
-                            <div className="text-sm text-gray-600">Total Revenue</div>
-                            <div className="text-xl -ml-3 font-bold text-emerald-600">
-                                ＄{orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0).toFixed(2)}
+                            <div className="text-sm text-gray-600">Cancelled</div>
+                            <div className="text-xl  font-bold text-red-500">
+                                {orders.filter(order => order.orderStatus === 'Cancelled').length}
                             </div>
                         </div>
                     </div>
