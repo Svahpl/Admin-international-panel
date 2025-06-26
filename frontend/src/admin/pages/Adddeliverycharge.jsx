@@ -73,7 +73,11 @@ function Adddeliverycharge() {
     const fetchCharges = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/charge/getcharge`);
+            const response = await fetch(`http://localhost:8000/api/charge/getcharge`,{
+                headers :{
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
 
             if (!response.ok) {
                 throw new Error('Failed to fetch charges');
@@ -145,10 +149,11 @@ function Adddeliverycharge() {
 
             console.log('Sending data:', requestData); // Debug log
 
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/charge/update-deliverycharge`, {
+            const response = await fetch(`http://localhost:8000/api/charge/update-deliverycharge`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify(requestData)
             });
