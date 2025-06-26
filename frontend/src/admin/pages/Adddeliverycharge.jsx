@@ -185,7 +185,7 @@ function Adddeliverycharge() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+            <div id="stock" className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
                 <div className="flex flex-col items-center space-y-3 text-center">
                     <RefreshCw className="animate-spin" size={28} />
                     <span className="text-gray-600 text-sm sm:text-base">Loading charges...</span>
