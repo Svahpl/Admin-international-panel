@@ -222,7 +222,7 @@ const AddItemsPage = () => {
         {/* Header - Mobile Optimized */}
         <div className="text-center mb-6">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-green-800 mb-2 px-2">
-            🌿 Shree Vankatesawra Agros and Herbs 🌿
+            🌿 Shree Venkatesawra Agros and Herbs 🌿
           </h1>
           <p className="text-green-600 text-sm md:text-base">Add New Agricultural Product</p>
         </div>
