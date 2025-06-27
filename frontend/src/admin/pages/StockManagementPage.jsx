@@ -47,7 +47,7 @@ const ProductManagementPage = () => {
           </div>
         </div>
         <p className="text-gray-700 font-medium">{message}</p>
-        <div className="mt-2 text-sm text-green-600">Shree Vankatesawra Agros</div>
+        <div className="mt-2 text-sm text-green-600">Shree Venkatesawra Agros</div>
       </div>
     </div>
   );
