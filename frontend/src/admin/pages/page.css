@@ -28,5 +28,24 @@
         margin-left: -40px;
         margin-top: 60px;
     }
+
+    .mobo {
+        width: 350px;
+        /* margin-left: -80px;
+        margin-right: 20px; */
+        transform: translate(-19%);
+    }
 }
 
+@media (width : 390px) {
+    .mobo {
+        width:320px
+    }
+}
+
+@media (width : 375px) {
+    .mobo {
+        width: 300px;
+        transform: translate(-21%);
+    }
+}
