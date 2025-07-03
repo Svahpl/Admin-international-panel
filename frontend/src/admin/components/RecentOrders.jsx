@@ -289,11 +289,6 @@ const RecentOrders = () => {
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gradient-to-r from-transparent via-green-200 to-transparent"></div>
                     </div>
-                    <div className="relative flex justify-center">
-                      <div className="bg-white px-4">
-                        <User className="text-green-500" size={18} />
-                      </div>
-                    </div>
                   </div>
 
                   {/* Customer Information */}
@@ -316,11 +311,6 @@ const RecentOrders = () => {
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gradient-to-r from-transparent via-blue-200 to-transparent"></div>
                     </div>
-                    <div className="relative flex justify-center">
-                      <div className="bg-white px-4">
-                        <Package className="text-blue-500" size={18} />
-                      </div>
-                    </div>
                   </div>
 
                   {/* Product Information */}
@@ -331,7 +321,7 @@ const RecentOrders = () => {
                     <div className="min-w-0 flex-1">
                       <span className="text-sm text-gray-600">
                         <div className="font-medium text-sm text-gray-900 truncate">
-                          <span className="text-emerald-600 text-md">totleProduct :</span>{(order.products?.length || order.items?.length || 0)} item(s)
+                          <span className="text-emerald-600 text-md">totalProduct :</span>{(order.products?.length || order.items?.length || 0)} item(s)
                         </div>
                       </span>
                       {order.products?.[0]?.name && (
@@ -348,11 +338,6 @@ const RecentOrders = () => {
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gradient-to-r from-transparent via-purple-200 to-transparent"></div>
                     </div>
-                    <div className="relative flex justify-center">
-                      <div className="bg-white px-4">
-                        <Clock className="text-purple-500" size={18} />
-                      </div>
-                    </div>
                   </div>
 
                   {/* Date and Amount Grid */}
@@ -367,7 +352,7 @@ const RecentOrders = () => {
                     <div className="flex items-center font-medium text-sm">
                       <CreditCard size={14} className="mr-2 flex-shrink-0 text-green-500" />
                       <div className="font-medium text-sm text-gray-900 truncate">
-                        <span className="text-emerald-600 text-md">totleAmount :</span>${order.totalAmount || order.name}
+                        <span className="text-emerald-600 text-md">totalAmount :</span>${order.totalAmount || order.name}
                       </div>
                     </div>
                   </div>
