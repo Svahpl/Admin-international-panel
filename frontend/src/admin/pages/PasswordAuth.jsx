@@ -494,7 +494,7 @@ const PasswordAuth = () => {
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-3">Password Updated Successfully!</h3>
                             <p className="text-gray-600 mb-8 leading-relaxed">
-                                Your password has been reset successfully. You can now access your Shree Vencateswara Agros & Herbs account with your new password.
+                                Your password has been reset successfully. You can now access your Sri Vencateswara Agros And Herbs account with your new password.
                             </p>
                             <button
                                 className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3.5 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
