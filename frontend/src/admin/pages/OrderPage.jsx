@@ -281,7 +281,7 @@ const OrdersList = () => {
             <div className="text-center mb-6">
                 <div className="flex items-center justify-center mb-2">
                     <Leaf className="h-8 w-8 text-green-600 mr-2" />
-                    <h1 className="text-2xl sm:text-3xl font-bold text-green-800">Shree Venkateswara Agros & Herbs</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-green-800">Sri Venkateswara Agros And Herbs</h1>
                 </div>
                 <p className="text-green-600 font-medium">Orders Management System</p>
             </div>
