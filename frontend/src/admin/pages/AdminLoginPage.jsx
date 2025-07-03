@@ -83,7 +83,7 @@ const AdminLoginPage = () => {
             <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 m-4">
                 <div className="text-center mb-6">
                     <h1 className="text-3xl font-bold text-green-800 mb-1">
-                        Shree Venkateswara 
+                        Sri Venkateswara 
                     </h1>
                     <h2 className="text-xl font-semibold text-green-700 mb-3">
                         Agros and Herbs
