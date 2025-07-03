@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Calendar, User, CreditCard, Package, Leaf } from 'lucide-react';
+import { Calendar, User, CreditCard, Package, Leaf, Phone, Mail, ShoppingBag, Clock } from 'lucide-react';
 import "../pages/page.css"
 
 const RecentOrders = () => {
@@ -86,7 +86,7 @@ const RecentOrders = () => {
 
   // Function to handle login redirect
   const handleLogin = () => {
-    window.location.href = '/admin/login';
+    window.location.href = '/adminlogin';
   };
 
   // Function to format date string
@@ -141,7 +141,7 @@ const RecentOrders = () => {
   };
 
   return (
-    <div id='dashboard' className="bg-white rounded-lg shadow-lg overflow-hidden w-full mx-auto border border-green-100 max-w-full">
+    <div   className= " mobo bg-white rounded-lg shadow-lg overflow-hidden border border-green-100 ">
       <div className="p-3 sm:p-4 border-b border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
         <div className="flex items-center space-x-2">
           <Leaf className="text-green-600 flex-shrink-0" size={20} />
@@ -200,7 +200,7 @@ const RecentOrders = () => {
         <>
           {/* Desktop view - table format */}
           <div className="hidden lg:block overflow-x-auto">
-            <table className="min-w-full bg-white">
+            <table className="min-w-full  bg-white">
               <thead className="bg-green-50">
                 <tr>
                   <th className="py-3 px-2 sm:px-4 border-b border-green-200 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Order ID</th>
@@ -220,9 +220,9 @@ const RecentOrders = () => {
                     </td>
                     <td className="py-3 px-2 sm:px-4">
                       <div className="font-medium text-gray-900 text-sm">{order.userName || order.name}</div>
-                      <div className="text-xs text-gray-500 truncate max-w-[150px]">{order.userEmail || order.email}</div>
-                      {order.customerPhone && (
-                        <div className="text-xs text-gray-400">{order.customerPhone}</div>
+                      <div className="text-xs text-gray-500 mb-1 truncate max-w-[150px]">{order.userEmail || order.email}</div>
+                      {order.phoneNumber && (
+                      <div className="text-xs text-gray-500">{order.phoneNumber}</div>
                       )}
                     </td>
                     <td className="py-3 px-2 sm:px-4">
@@ -265,33 +265,61 @@ const RecentOrders = () => {
           <div className="lg:hidden">
             <div className="divide-y divide-gray-200">
               {orders.map((order, index) => (
-                <div key={order.orderId || order._id || index} className="p-3 sm:p-4 hover:bg-green-50 transition-colors">
+                <div key={order.orderId || order._id || index} className="px-4 py-4 sm:px-6 sm:py-4 hover:bg-green-50 transition-colors">
+                  <div className="order-2 sm:order-1 mb-3">
+                    <span className="bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded-full">
+                      #{order.orderId ? order.orderId.slice(-8) : order._id?.slice(-8) || `ORD${index.toString().padStart(3, '0')}`}
+                    </span>
+                  </div>
+
                   {/* Header row with Order ID and Status */}
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 space-y-2 sm:space-y-0">
-                    <div className="order-2 sm:order-1">
-                      <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
-                        #{order.orderId ? order.orderId.slice(-8) : order._id?.slice(-8) || `ORD${index.toString().padStart(3, '0')}`}
-                      </span>
-                    </div>
-                    <div className="order-1 sm:order-2 flex flex-wrap gap-1">
+                  <div className="flex  flex-col sm:flex-row sm:justify-between sm:items-start mb-3 space-y-2 sm:space-y-0">
+                    <div className="order-1  sm:order-2 flex flex-wrap gap-5">
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(order.orderStatus || order.status)}`}>
-                        {order.orderStatus || order.status || 'Pending'}
+                        <span className="text-blue-600 text-md">order status:</span> {order.orderStatus || order.status || 'Pending'}
                       </span>
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(order.paymentStatus || order.payment?.status)}`}>
-                        Pay: {order.paymentStatus || order.payment?.status || 'Pending'}
+                        <span className="text-purple-600 text-md">Payment status:</span> {order.paymentStatus || order.payment?.status || 'Pending'}
                       </span>
+                    </div>
+                  </div>
+
+                  {/* Beautiful Divider */}
+                  <div className="relative mb-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gradient-to-r from-transparent via-green-200 to-transparent"></div>
+                    </div>
+                    <div className="relative flex justify-center">
+                      <div className="bg-white px-4">
+                        <User className="text-green-500" size={18} />
+                      </div>
                     </div>
                   </div>
 
                   {/* Customer Information */}
                   <div className="flex items-start mb-3">
-                    <User size={16} className="text-gray-400 mr-2 mt-1 flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <div className="font-medium text-sm text-gray-900 truncate">{order.customerName || order.name}</div>
-                      <div className="text-xs text-gray-500 truncate">{order.customerEmail || order.email}</div>
-                      {order.customerPhone && (
-                        <div className="text-xs text-gray-400 mt-1">{order.customerPhone}</div>
-                      )}
+                    <div className="min-w-0 flex-1 ">
+                      <div className="font-medium text-sm text-gray-900 truncate">
+                        <span className="text-emerald-600 text-md">customerName:</span> {order.userName || order.name}
+                      </div>
+                      <div className="font-medium text-sm text-gray-900 truncate">
+                        <span className="text-emerald-600 text-md">Email:</span> {order.userEmail || order.name}
+                      </div>
+                      <div className="font-medium text-sm text-gray-900 truncate">
+                        <span className="text-emerald-600 text-md">Phone:</span> {order.phoneNumber || order.name}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Beautiful Divider */}
+                  <div className="relative mb-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gradient-to-r from-transparent via-blue-200 to-transparent"></div>
+                    </div>
+                    <div className="relative flex justify-center">
+                      <div className="bg-white px-4">
+                        <Package className="text-blue-500" size={18} />
+                      </div>
                     </div>
                   </div>
 
@@ -302,29 +330,50 @@ const RecentOrders = () => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <span className="text-sm text-gray-600">
-                        {order.products?.length || order.items?.length || 0} product(s)
+                        <div className="font-medium text-sm text-gray-900 truncate">
+                          <span className="text-emerald-600 text-md">totleProduct :</span>{(order.products?.length || order.items?.length || 0)} item(s)
+                        </div>
                       </span>
                       {order.products?.[0]?.name && (
                         <div className="text-xs text-gray-500 mt-1 truncate">
-                          {order.products[0].name}
+                          <span className="text-indigo-600">{order.products[0].name}</span>
                           {order.products.length > 1 && ` +${order.products.length - 1} more`}
                         </div>
                       )}
                     </div>
                   </div>
 
+                  {/* Beautiful Divider */}
+                  <div className="relative mb-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gradient-to-r from-transparent via-purple-200 to-transparent"></div>
+                    </div>
+                    <div className="relative flex justify-center">
+                      <div className="bg-white px-4">
+                        <Clock className="text-purple-500" size={18} />
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Date and Amount Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div className="flex items-center text-gray-500">
-                      <Calendar size={14} className="mr-2 flex-shrink-0" />
-                      <span className="truncate">{formatDate(order.createdAt || order.orderDate)}</span>
+                      <Calendar size={14} className="mr-2 flex-shrink-0 text-blue-500" />
+                      <div className="font-medium text-sm text-gray-900 truncate">
+                        <span className="text-emerald-600 text-md">orderdate :</span>{formatDate(order.createdAt || order.orderDate)}
+                      </div>
                     </div>
 
                     <div className="flex items-center font-medium text-sm">
-                      <CreditCard size={14} className="mr-2 flex-shrink-0 text-gray-500" />
-                      <span className="text-gray-900">${order.totalAmount || order.total || 0}</span>
+                      <CreditCard size={14} className="mr-2 flex-shrink-0 text-green-500" />
+                      <div className="font-medium text-sm text-gray-900 truncate">
+                        <span className="text-emerald-600 text-md">totleAmount :</span>${order.totalAmount || order.name}
+                      </div>
                     </div>
                   </div>
+
+                  {/* Bottom decorative border */}
+                  <div className="mt-4 h-1 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 rounded-full"></div>
                 </div>
               ))}
             </div>
